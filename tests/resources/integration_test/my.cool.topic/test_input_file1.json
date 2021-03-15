@@ -1,0 +1,11 @@
+{
+  "LOGSTASH_ID": "1d01eb4a-d01a-4663-a78f-e809b671e41f",
+  "REFERER": "\"-\"",
+  "ACTIVITY_IP": "1.0.0.0",
+  "ACTIVITY_TYPE_ID": 31,
+  "ACTIVITY_DATE": 123456789000,
+  "CID": "17821466",
+  "VERSION": "2.0",
+  "REF_PARAM": "https%3A%2F%2Fslack.com%2Fsignin",
+  "USER_AGENT": "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36\""
+}
