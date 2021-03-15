@@ -1,0 +1,50 @@
+{
+  "config": {
+    "InboundConverter": {
+      "data_tag": "attributes",
+      "rules": [
+        {
+          "rule": "is_eu_allowed",
+          "var": "is_eu_allowed",
+          "rule_set": "inbound_converter",
+          "is_eu_allowed": [1, 2, 3, 4, 5]
+        },
+        { "collection": "maxmind", "rule": "get_gdpr_region", "var": "REGION_CD", "rule_set": "inbound_converter" },
+        { "rule": "is_gdpr_allowed", "var": "EU_ALLOWED", "rule_set": "inbound_converter", "include_gdpr_regions": ["BK"] },
+        { "collection": "kickfire", "rule": "get_external_id", "var": "DOMAIN", "rule_set": "inbound_converter" }
+      ],
+      "load": {
+        "tables": [
+          {
+            "table_name": "tt-pd-{}.edc_activity.inbound_converter",
+            "columns": [
+              "LOGSTASH_ID",
+              "ACTIVITY_TYPE_ID",
+              "VERSION",
+              "CID",
+              "REF_PARAM",
+              "REFERER",
+              "USER_AGENT",
+              "REGION_CD",
+              "EU_ALLOWED",
+              "ACTIVITY_DATE",
+              "DOMAIN"
+            ]
+          },
+          {
+            "table_name": "tt-pd-{}.edc_activity.ip_lookup",
+            "columns": ["LOGSTASH_ID", "ACTIVITY_IP"]
+          }
+        ],
+        "rules": [
+          { "rule": "filter_key_default", "column": "DOMAIN", "rule_set": "filter_inbound_converter" },
+          { "rule": "filter_key_false", "column": "IS_ISP", "rule_set": "filter_inbound_converter" }
+        ]
+      },
+      "postprocess": [
+        {"topic": "tester", "rules": [{"rule": "filter_key_default", "column": "title", "rule_set": "filter_inbound_converter"}]},
+        {"topic": "projects/tt-pd-{}/topics/ibc.write-client-activity"}
+      ]
+    }
+  }
+}
